@@ -19,10 +19,11 @@ class TestShare(TestCase):
         float(self.yahoo.get_open())
         float(self.yahoo.get_price())
 
-    # def test_get_info(self):
-    #     info = self.yahoo.get_info()
-    #     self.assertEqual(info['start'], '1996-04-12')
-    #     self.assertEqual(info['symbol'], 'YHOO')
+    def test_get_info(self):
+        info = self.yahoo.get_info()
+        # get_info() currently don't return anything but 'symbol'
+        # self.assertEqual(info['start'], '1996-04-12')
+        self.assertEqual(info['symbol'], 'YHOO')
 
     def test_get_historical(self):
         history = self.yahoo.get_historical('2014-04-25', '2014-04-29')
