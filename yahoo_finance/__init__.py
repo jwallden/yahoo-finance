@@ -124,7 +124,7 @@ class Base(object):
         response = yql.YQLQuery().execute(query)
         try:
             _, results = response['query']['results'].popitem()
-        except (KeyError, StopIteration):
+        except (KeyError, StopIteration, AttributeError):
             try:
                 raise YQLQueryError(response['error']['description'])
             except KeyError:
@@ -194,6 +194,11 @@ class Share(Base):
 
     def get_change(self):
         return self.data_set['Change']
+
+    def get_percent_change(self):
+        return self.data_set['Change_PercentChange'] \
+            .split(' - ')[-1] \
+            .strip()
 
     def get_volume(self):
         return self.data_set['Volume']
