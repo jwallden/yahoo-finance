@@ -45,6 +45,7 @@ except ImportError:
     from urllib import urlencode
 
 import simplejson
+import requests
 
 # Yahoo! YQL API
 PUBLIC_API_URL = 'https://query.yahooapis.com/v1/public/yql'
@@ -70,22 +71,13 @@ class YQLResponseMalformedError(Exception):
 class YQLQuery(object):
 
     def __init__(self):
-        self.connection = HTTPConnection('query.yahooapis.com')
-        self.response = None
+        self.r = None
 
     def execute(self, yql, token=None):
 
-        self.connection.request('GET', PUBLIC_API_URL + '?' +
-                                urlencode({'q': yql, 'format': 'json',
-                                           'env': DATATABLES_URL}))
+        self.r = requests.get(PUBLIC_API_URL, params={ 'q': yql, 'format': 'json', 'env': DATATABLES_URL })
 
-        self.response = self.connection.getresponse()
-
-        if self.response.status == 200:
-            return simplejson.loads(self.response.read())
+        if self.r.status_code == 200:
+            return self.r.json()
         else:
-            raise YQLQueryError('The server returned error ' +
-                                str(self.response.status))
-
-    def __del__(self):
-        self.connection.close()
+            raise YQLQueryError('The server returned error ' + str(self.r.status_code))
