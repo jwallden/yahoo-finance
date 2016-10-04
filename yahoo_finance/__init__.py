@@ -62,6 +62,15 @@ class SymbolDoesNotExistError(Exception):
         return 'The symbol does not seem to exist'
 
 
+class SymbolDoesNotExistError(Exception):
+
+    def __init__(self):
+        return Exception.__init__(self, 'The symbol does not seem to exist')
+
+    def _str_(self):
+        return 'The symbol does not seem to exist'
+
+
 class Base(object):
 
     def __init__(self, symbol):
@@ -106,6 +115,14 @@ class Base(object):
                     if 'N/A' in v:
                         results[k] = None
 
+    def _validate_symbol(self, result):
+        try:
+            if result['LastTradePriceOnly'] == None:
+                raise SymbolDoesNotExistError()
+        except(KeyError):
+            if result['Name'] == None:
+                raise SymbolDoesNotExistError
+
     def _request(self, query):
         response = YQLQuery().execute(query)
         try:
@@ -124,6 +141,7 @@ class Base(object):
     def _fetch(self):
         query = self._prepare_query(table=self._table, key=self._key)
         data = self._request(query)
+        self._validate_symbol(data)
         return data
 
     def refresh(self):
