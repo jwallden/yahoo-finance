@@ -71,7 +71,7 @@ class YQLResponseMalformedError(Exception):
 class YQLQuery(object):
 
     def __init__(self):
-<<<<<<< HEAD
+
         self.r = None
 
     def execute(self, yql, token=None):
@@ -82,7 +82,7 @@ class YQLQuery(object):
             return self.r.json()
         else:
             raise YQLQueryError('The server returned error ' + str(self.r.status_code))
-=======
+
         self.connection = HTTPConnection('query.yahooapis.com')
         self.response = None
 
@@ -102,4 +102,3 @@ class YQLQuery(object):
 
     def __del__(self):
         self.connection.close()
->>>>>>> response_code_checking
