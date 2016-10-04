@@ -55,7 +55,10 @@ def get_date_range(start_day, end_day, step_days=365, mask='%Y-%m-%d'):
     else:
         yield start.strftime(mask), end.strftime(mask)
 
+class SymbolDoesNotExistError(Exception):
 
+    def _str_(self):
+        return 'The symbol does not seem to exist'
 
 class Base(object):
 
