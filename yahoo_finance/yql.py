@@ -82,23 +82,3 @@ class YQLQuery(object):
             return self.r.json()
         else:
             raise YQLQueryError('The server returned error ' + str(self.r.status_code))
-
-        self.connection = HTTPConnection('query.yahooapis.com')
-        self.response = None
-
-    def execute(self, yql, token=None):
-
-        self.connection.request('GET', PUBLIC_API_URL + '?' +
-                                urlencode({'q': yql, 'format': 'json',
-                                           'env': DATATABLES_URL}))
-
-        self.response = self.connection.getresponse()
-
-        if self.response.status == 200:
-            return simplejson.loads(self.response.read())
-        else:
-            raise YQLQueryError('The server returned error ' +
-                                str(self.response.status))
-
-    def __del__(self):
-        self.connection.close()
