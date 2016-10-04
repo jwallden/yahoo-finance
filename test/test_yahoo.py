@@ -11,7 +11,8 @@ from yahoo_finance import Currency, Share, edt_to_utc, get_date_range,\
 
 class TestShare(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         self.symbol = 'YHOO'
         self.yahoo = Share(self.symbol)
 
